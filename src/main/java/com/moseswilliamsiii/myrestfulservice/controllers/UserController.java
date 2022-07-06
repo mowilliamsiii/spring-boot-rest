@@ -3,10 +3,11 @@ package com.moseswilliamsiii.myrestfulservice.controllers;
 import com.moseswilliamsiii.myrestfulservice.model.User;
 import com.moseswilliamsiii.myrestfulservice.services.UserDaoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.time.LocalDate;
-import java.time.Month;
+import java.net.URI;
 import java.util.List;
 
 //User resource
@@ -35,10 +36,15 @@ public class UserController {
     //creating a new user POST
     //Need input (details of user)
     //The output should be CREATED status code and the created URI
-
     @PostMapping(path = "/users")
-    public void createUser(@RequestBody User user){
+    public ResponseEntity<Object> createUser(@RequestBody User user){
         User savedUser = userDaoService.save(user);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}").buildAndExpand(savedUser.getId()).toUri();
+
+        return ResponseEntity.created(location).build();
     }
 
 }
