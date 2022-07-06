@@ -29,6 +29,12 @@ public class UserDaoServiceImpl implements UserDaoService{
     public User save(User user) {
         if(user.getId() == null){
             userCount++;
+            user.setId(userCount);
+        }
+        for(User loopUser : users){
+            if(user.getId().equals(loopUser.getId())){
+                user.setId(user.getId()*2);
+            }
         }
         users.add(user);
         return user;
@@ -43,6 +49,5 @@ public class UserDaoServiceImpl implements UserDaoService{
         }
         return null;
     }
-
 
 }

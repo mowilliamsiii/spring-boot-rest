@@ -8,6 +8,8 @@ public class User {
     private String name;
     private LocalDate birthDate;
 
+    protected User(){}
+
     public User(Integer id, String name, LocalDate birthDate) {
         this.id = id;
         this.name = name;
