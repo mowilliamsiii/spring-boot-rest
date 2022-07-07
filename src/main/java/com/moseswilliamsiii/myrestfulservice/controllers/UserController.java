@@ -1,5 +1,6 @@
 package com.moseswilliamsiii.myrestfulservice.controllers;
 
+import com.moseswilliamsiii.myrestfulservice.exceptions.UserNotFoundException;
 import com.moseswilliamsiii.myrestfulservice.model.User;
 import com.moseswilliamsiii.myrestfulservice.services.UserDaoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,11 @@ public class UserController {
     //retrieveUser(int id)
     @GetMapping(path = "/users/{id}")
     public User getUser(@PathVariable int id){
-        return userDaoService.findUser(id);
+        User user = userDaoService.findUser(id);
+        if(user == null){
+            throw new UserNotFoundException("id " + id);
+        }
+        return user;
     }
 
     //creating a new user POST
@@ -38,6 +43,7 @@ public class UserController {
     //The output should be CREATED status code and the created URI
     @PostMapping(path = "/users")
     public ResponseEntity<Object> createUser(@RequestBody User user){
+
         User savedUser = userDaoService.save(user);
 
         URI location = ServletUriComponentsBuilder
