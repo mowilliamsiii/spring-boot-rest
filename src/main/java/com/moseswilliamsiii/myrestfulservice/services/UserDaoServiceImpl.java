@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -44,6 +45,19 @@ public class UserDaoServiceImpl implements UserDaoService{
     public User findUser(int id) {
         for(User user : users) {
             if (user.getId() == id) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public User deleteUserById(int id) {
+        Iterator<User> iterator = users.iterator();
+        while(iterator.hasNext()){
+            User user = iterator.next();
+            if(user.getId() == id){
+                iterator.remove();
                 return user;
             }
         }

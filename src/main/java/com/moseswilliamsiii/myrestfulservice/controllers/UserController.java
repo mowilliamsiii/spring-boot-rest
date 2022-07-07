@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class UserController {
     //retrieveAllUsers
     @GetMapping(path = "/users")
     public List<User> getAllUsers(){
+        if(userDaoService.findAll().isEmpty()){
+            throw new UserNotFoundException("No users found");
+        }
         return userDaoService
                 .findAll();
     }
@@ -38,11 +42,19 @@ public class UserController {
         return user;
     }
 
+    @DeleteMapping(path = "/users/{id}")
+    public void deleteUser(@PathVariable int id){
+        User user = userDaoService.deleteUserById(id);
+        if(user == null){
+            throw new UserNotFoundException("id " + id);
+        }
+    }
+
     //creating a new user POST
     //Need input (details of user)
     //The output should be CREATED status code and the created URI
     @PostMapping(path = "/users")
-    public ResponseEntity<Object> createUser(@RequestBody User user){
+    public ResponseEntity<Object> createUser(@Valid @RequestBody User user){
 
         User savedUser = userDaoService.save(user);
 

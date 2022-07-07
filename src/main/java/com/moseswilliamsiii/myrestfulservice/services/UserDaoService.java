@@ -17,5 +17,6 @@ public interface UserDaoService {
 
     User findUser(int id);
 
+    User deleteUserById(int id);
 
 }
