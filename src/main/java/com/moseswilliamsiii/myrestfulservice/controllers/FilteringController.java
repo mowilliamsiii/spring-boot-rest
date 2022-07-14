@@ -1,6 +1,10 @@
 package com.moseswilliamsiii.myrestfulservice.controllers;
 
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.moseswilliamsiii.myrestfulservice.model.FilterBean;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,8 +16,17 @@ import java.util.List;
 public class FilteringController {
 
     @GetMapping("/filtering")
-    public FilterBean retrieveSomebean(){
-        return new FilterBean("yes","yes","yes");
+    public MappingJacksonValue retrieveSomebean(){
+        FilterBean filterBean = new FilterBean("yes", "yes", "yes");
+
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("value1","value2");
+
+        FilterProvider filters = new SimpleFilterProvider().addFilter("filterObject",filter);
+
+        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(filterBean);
+
+        mappingJacksonValue.setFilters(filters);
+        return mappingJacksonValue;
 
     }
 
