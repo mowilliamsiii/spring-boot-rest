@@ -1,12 +1,15 @@
 package com.moseswilliamsiii.myrestfulservice.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 
+@JsonFilter("filterObject")
 public class Customer {
 
     private Integer Id;
     private String name;
     private Boolean isFemale;
+
 
     public Customer(Integer id, String name, Boolean isFemale) {
         Id = id;

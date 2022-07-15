@@ -16,7 +16,7 @@ import java.util.List;
 public class FilteringController {
 
     @GetMapping("/filtering")
-    public MappingJacksonValue retrieveSomebean(){
+    public MappingJacksonValue retrieveSomeBean(){
         FilterBean filterBean = new FilterBean("yes", "yes", "yes");
 
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("value1","value2");
@@ -31,8 +31,17 @@ public class FilteringController {
     }
 
     @GetMapping("/filtering-list")
-    public List<FilterBean> retrieveSomebeanList(){
-        return Arrays.asList(new FilterBean("yes","yes","yes"),new FilterBean("what","what","what"));
+    public MappingJacksonValue retrieveSomeBeanList(){
+        List<FilterBean> someList = Arrays.asList(new FilterBean("yes","yes","yes"),new FilterBean("what","what","what"));
+
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("value1","value2");
+
+        FilterProvider filters = new SimpleFilterProvider().addFilter("filterObject",filter);
+
+        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(someList);
+
+        mappingJacksonValue.setFilters(filters);
+        return mappingJacksonValue;
 
     }
 }
