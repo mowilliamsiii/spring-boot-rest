@@ -47,21 +47,5 @@ public class CustomerController {
     }
 }
 
-/*
-*     @GetMapping("/filtering-list")
-    public MappingJacksonValue retrieveSomeBeanList(){
-        List<FilterBean> someList = Arrays.asList(new FilterBean("yes","yes","yes"),new FilterBean("what","what","what"));
 
-        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("value1","value2");
 
-        FilterProvider filters = new SimpleFilterProvider().addFilter("filterObject",filter);
-
-        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(someList);
-
-        mappingJacksonValue.setFilters(filters);
-        return mappingJacksonValue;
-
-    }
-*
-*
-* */
