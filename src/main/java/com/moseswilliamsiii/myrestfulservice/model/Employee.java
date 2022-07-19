@@ -9,17 +9,17 @@ public class Employee {
 
     @Id
     @GeneratedValue
-    private String id;
+    private int id;
     private String name;
 
     public Employee(){}
 
-    public Employee(String id, String name) {
+    public Employee(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
