@@ -2,6 +2,7 @@ package com.moseswilliamsiii.myrestfulservice.controllers;
 
 import com.moseswilliamsiii.myrestfulservice.exceptions.UserNotFoundException;
 import com.moseswilliamsiii.myrestfulservice.model.Employee;
+import com.moseswilliamsiii.myrestfulservice.model.Post;
 import com.moseswilliamsiii.myrestfulservice.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,16 @@ public class EmployeeController {
     @GetMapping(path="/employees")
     public List<Employee> getAllEmployees(){
         return employeeService.findAll();
+    }
+    @GetMapping("/{id}/posts")
+    public List<Post> getEmployeePost(@PathVariable int id){
+        Optional<Employee> employee = employeeService.findById(id);
+
+        if(!employee.isPresent()){
+            throw new UserNotFoundException("Employee with id " + id + " was not found");
+        }
+
+        return employee.get().getPosts();
     }
 
     @GetMapping("/employee-by-id/{id}")
