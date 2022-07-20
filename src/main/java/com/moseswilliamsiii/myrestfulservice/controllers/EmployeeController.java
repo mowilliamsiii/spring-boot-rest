@@ -3,6 +3,7 @@ package com.moseswilliamsiii.myrestfulservice.controllers;
 import com.moseswilliamsiii.myrestfulservice.exceptions.UserNotFoundException;
 import com.moseswilliamsiii.myrestfulservice.model.Employee;
 import com.moseswilliamsiii.myrestfulservice.model.Post;
+import com.moseswilliamsiii.myrestfulservice.repo.PostRepo;
 import com.moseswilliamsiii.myrestfulservice.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,9 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private PostRepo postRepo;
 
     @GetMapping(path="/employees")
     public List<Employee> getAllEmployees(){
@@ -58,5 +62,27 @@ public class EmployeeController {
                 .path("/{id}").buildAndExpand(employee.getId()).toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    @PostMapping("/create-post/{id}")
+    public ResponseEntity<Object> createPost(@PathVariable int id, @RequestBody Post post){
+
+        Optional<Employee> employeeOptional = employeeService.findById(id);
+
+        if(!employeeOptional.isPresent()){
+            throw new UserNotFoundException("Employee with id " + id + " was not found");
+        }
+
+        Employee employee = employeeOptional.get();
+
+        post.setEmployee(employee);
+
+        postRepo.save(post);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}").buildAndExpand(post.getId()).toUri();
+
+        return ResponseEntity.created(location).build();
+
     }
 }
